@@ -1,0 +1,25 @@
+# Menopausa Real 40+
+
+Landing page estática, responsiva e sem dependências de build. Checkout oficial configurado em `CHECKOUT_CAKTO_URL`, no arquivo `script.js`.
+
+## Desenvolvimento local
+
+```sh
+python3 -m http.server 3000 --bind 0.0.0.0
+```
+
+## Publicação: GitHub → Vercel
+
+1. Na Vercel, selecione **Add New → Project** e importe `Centrialhub/menopausa`.
+2. Framework: **Other**. Root Directory: raiz do repositório. Branch de produção: `main`.
+3. O arquivo `vercel.json` configura publicação estática sem comando de build, com saída na raiz (`.`). Não são necessárias variáveis de ambiente.
+4. Clique em **Deploy**. Novos pushes na branch `main` geram deploys de produção automaticamente após a integração ser conectada.
+5. Após a publicação, confira imagens, FAQ, links legais e botões que levam a `https://pay.cakto.com.br/nwyvmfs_1200486`.
+
+Também é possível publicar pela CLI autenticada: `vercel --prod`.
+
+## Conteúdo
+
+Publique `index.html`, `styles.css`, `script.js` e a pasta `assets`. A página usa Google Fonts, um retrato gerado por IA e uma ilustração SVG original. As imagens são locais. Não há checkout interno, formulários, rastreadores ou área de membros.
+
+As páginas na seção de preview são composições ilustrativas, identificadas como tal. O PDF é entregue pela plataforma de venda e não faz parte deste repositório. Confira os canais de suporte e as condições comerciais com o responsável pelo produto.
