@@ -32,3 +32,33 @@ dialog.addEventListener('click', event => {
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
   }
 });
+
+// Lightweight progressive reveals; all content stays visible without JavaScript.
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.section-heading, .symptoms article, .split > div, .page, .changes > div, .offer-copy, .offer-card, .audience > div, .audience-list li, .faq-layout > div, .final .wrap').forEach((element, index) => {
+    element.classList.add('reveal-ready');
+    element.style.setProperty('--delay', `${(index % 4) * 55}ms`);
+    revealObserver.observe(element);
+  });
+}
+const progress = document.querySelector('.reading-progress');
+let scrollTicking = false;
+function updateProgress() {
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = `scaleX(${maxScroll > 0 ? window.scrollY / maxScroll : 0})`;
+  scrollTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) { window.requestAnimationFrame(updateProgress); scrollTicking = true; }
+}, { passive: true });
+window.addEventListener('resize', updateProgress);
+updateProgress();

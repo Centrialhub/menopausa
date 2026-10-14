@@ -20,6 +20,10 @@ Também é possível publicar pela CLI autenticada: `vercel --prod`.
 
 ## Conteúdo
 
-Publique `index.html`, `styles.css`, `script.js` e a pasta `assets`. A página usa Google Fonts, um retrato gerado por IA e uma ilustração SVG original. As imagens são locais. Não há checkout interno, formulários, rastreadores ou área de membros.
+Publique `index.html`, `styles.css`, `script.js` e a pasta `assets`. A página usa Google Fonts, duas imagens geradas por IA e uma ilustração SVG original. As imagens são locais. Não há checkout interno, formulários, rastreadores ou área de membros.
 
 As páginas na seção de preview são composições ilustrativas, identificadas como tal. O PDF é entregue pela plataforma de venda e não faz parte deste repositório. Confira os canais de suporte e as condições comerciais com o responsável pelo produto.
+
+## Experiência visual
+
+Identidade com rosa vibrante, fundos escuros e rosados, tipografia forte e mockup em CSS. Animações de entrada usam IntersectionObserver; movimentos são desativados quando a preferência `prefers-reduced-motion` está ativa. Todos os CTAs têm link direto no HTML e funcionam sem JavaScript.
