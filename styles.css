@@ -6,3 +6,17 @@
 @media(max-width:760px){.hero-shell:before{background-position:85% bottom}}
 /* Keep white CTA labels readable while retaining the vivid brand palette. */
 .button{background:#dc1b5c}.topline{background:#d71958}
+/* Mobile artwork has its own canvas: the purchase copy cannot cover the face. */
+@media(max-width:760px){
+  .hero-shell:before,.hero-shell:after{display:none}
+  .hero-shell{background:#1b1717}
+  .hero{padding-bottom:0;gap:24px}
+  .hero-art{width:calc(100% + 40px);max-width:none;margin-left:-20px;margin-right:-20px;height:560px;isolation:isolate;background:url('assets/hero-wellness.webp') 85% center/auto 560px no-repeat}
+  .hero-art:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#1b1717 0%,transparent 12%,transparent 75%,#1b17173b);z-index:-1}
+  .hero-book{right:25px;bottom:25px}
+  .art-note{top:30px;left:20px;right:auto;max-width:130px;font-size:17px;text-align:left;transform:rotate(-7deg)}
+  .art-note em{font-size:23px;display:block}
+  .art-note>span{font-size:29px}
+  .round-label{left:22px;bottom:195px}
+  .floating-label{left:20px;bottom:35px;max-width:180px}
+}
