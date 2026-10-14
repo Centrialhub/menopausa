@@ -20,7 +20,7 @@ Também é possível publicar pela CLI autenticada: `vercel --prod`.
 
 ## Conteúdo
 
-Publique `index.html`, `styles.css`, `script.js` e a pasta `assets`. A página usa Google Fonts, duas imagens geradas por IA e uma ilustração SVG original. As imagens são locais. Não há checkout interno, formulários, rastreadores ou área de membros.
+Publique `index.html`, `styles.css`, `script.js` e a pasta `assets`. A página usa Google Fonts, duas imagens geradas por IA e uma ilustração SVG original. As imagens são locais. Não há checkout interno, formulários ou área de membros. O Meta Pixel `296038289614983` está instalado no HTML e registra `PageView`. Eventos de pagamento e compra precisam ser configurados na Cakto; esta página não registra compras confirmadas.
 
 As páginas na seção de preview são composições ilustrativas, identificadas como tal. O PDF é entregue pela plataforma de venda e não faz parte deste repositório. Confira os canais de suporte e as condições comerciais com o responsável pelo produto.
 
