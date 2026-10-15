@@ -20,3 +20,21 @@
   .round-label{left:22px;bottom:195px}
   .floating-label{left:20px;bottom:35px;max-width:180px}
 }
+/* Copy adjustments retain the existing visual system and mobile artwork. */
+.hero h1.conversion-headline{font-size:clamp(32px,3.05vw,44px);font-weight:800;line-height:1.18;letter-spacing:-1.3px;margin-bottom:22px}
+.hero h1.conversion-headline em{display:block;color:#ff78a1;font-weight:800;margin-bottom:10px}
+.hero-product{flex-basis:100%;line-height:1.5}
+.hero-product b{display:block;font-size:15px;letter-spacing:.3px;color:#fff}
+.hero-product>span{font-size:13px}
+.offer-includes{font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--dark);text-align:left;margin:0 0 15px}
+.offer-card .offer-includes+.check-list{margin-top:0}
+@media(max-width:760px){
+  .hero h1.conversion-headline{font-size:clamp(25px,6.7vw,32px);line-height:1.18;letter-spacing:-.65px;margin-bottom:17px}
+  .hero h1.conversion-headline em{margin-bottom:8px}
+  .hero .eyebrow{margin-bottom:18px;font-size:10px}
+  .hero-copy>p{margin-bottom:15px}
+  .hero-price{margin-top:15px;gap:7px 10px}
+  .hero-product b{font-size:14px}
+  .hero .micro{font-size:11px!important}
+  .offer-card .button{font-size:11px}
+}
