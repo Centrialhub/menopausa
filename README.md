@@ -27,3 +27,7 @@ As páginas na seção de preview são composições ilustrativas, identificadas
 ## Experiência visual
 
 Identidade com rosa vibrante, fundos escuros e rosados, tipografia forte e mockup em CSS. Animações de entrada usam IntersectionObserver; movimentos são desativados quando a preferência `prefers-reduced-motion` está ativa. Todos os CTAs têm link direto no HTML e funcionam sem JavaScript.
+
+## Google Ads
+
+Tag base `AW-18515830369` instalada com gtag.js assíncrono. Nenhuma conversão de compra é disparada pela landing page. Uma ação de conversão específica requer seu rótulo e configuração no ponto correto do fluxo de compra.
