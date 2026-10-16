@@ -6,6 +6,6 @@
   },
   "scripts": {
     "build": "node scripts/build-static.cjs",
-    "test": "node tests/cakto-webhook.test.cjs"
+    "test": "node --test tests/cakto-webhook.test.cjs tests/conversion.test.cjs"
   }
 }

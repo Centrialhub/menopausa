@@ -38,3 +38,36 @@
   .hero .micro{font-size:11px!important}
   .offer-card .button{font-size:11px}
 }
+
+/* Conversion clarity: retain artwork, palette and section order. */
+@media(max-width:760px){.header{height:68px}.hero-product>span{display:none}}
+.hero h1.conversion-headline em{display:inline;margin:0}
+.hero-copy>.hero-subtitle{font-size:18px;line-height:1.6;color:#fff;margin-bottom:12px}
+.hero-copy>.hero-description{font-size:15px;line-height:1.65;margin-bottom:18px}
+.hero-copy>.hero-education{font-size:12px;line-height:1.55;color:#e8cfd4;margin:12px 0 0}
+.concrete-benefits li{font-size:15px;line-height:1.65;margin-bottom:16px}
+.concrete-benefits strong{color:var(--wine)}
+.preview-price{margin-top:16px!important;color:var(--wine);font-weight:700}
+.preview-caption{font-size:13px;line-height:1.6}
+.page p,.page li,.page-callout{font-size:13px;line-height:1.7}
+.page small{font-size:9px;letter-spacing:.6px}
+.page{min-height:440px}
+.final-price small{display:block;font-size:14px;letter-spacing:0;font-weight:500}
+@media(max-width:760px){
+  .hero{padding-top:24px}
+  .hero .eyebrow{margin-bottom:12px}
+  .hero h1.conversion-headline{font-size:clamp(27px,7.2vw,32px);line-height:1.18;margin-bottom:12px}
+  .hero-copy>.hero-subtitle{font-size:16px;line-height:1.55;margin-bottom:10px}
+  .hero-copy>.hero-description{font-size:14px;line-height:1.6;margin-bottom:12px}
+  .hero-price{margin:12px 0}
+  .hero-product>span{font-size:12px}
+  .hero-copy>.hero-education{font-size:12px;margin-top:10px}
+  .hero .button{min-height:58px;font-size:13px}
+  .hero .micro{font-size:12px!important;margin-top:10px!important}
+  .page{width:100%;max-width:380px;min-height:0;margin:0 0 22px;padding:28px;transform:none}
+  .page:hover{transform:none}
+  .pages{gap:0;padding:0}
+  .page p,.page li,.page-callout{font-size:14px;line-height:1.75}
+  .page small{font-size:10px}
+  .page h3{font-size:28px}
+}
