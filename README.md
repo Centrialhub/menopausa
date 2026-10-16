@@ -1,6 +1,6 @@
 # Menopausa Real 40+
 
-Landing page estática, responsiva e sem dependências de build. Checkout oficial configurado em `CHECKOUT_CAKTO_URL`, no arquivo `script.js`.
+Landing page estática e responsiva, com uma Vercel Function Node.js para receber webhooks. O build apenas copia os arquivos públicos, sem dependências externas. Checkout oficial configurado em `CHECKOUT_CAKTO_URL`, no arquivo `script.js`.
 
 ## Desenvolvimento local
 
@@ -12,7 +12,7 @@ python3 -m http.server 3000 --bind 0.0.0.0
 
 1. Na Vercel, selecione **Add New → Project** e importe `Centrialhub/menopausa`.
 2. Framework: **Other**. Root Directory: raiz do repositório. Branch de produção: `main`.
-3. O arquivo `vercel.json` configura publicação estática sem comando de build, com saída na raiz (`.`). Não são necessárias variáveis de ambiente.
+3. O arquivo `vercel.json` configura `npm run build`, saída estática em `public` e mantém as Functions em `api`. O webhook exige as variáveis descritas em [docs/cakto-webhook.md](docs/cakto-webhook.md); a landing não exige variáveis.
 4. Clique em **Deploy**. Novos pushes na branch `main` geram deploys de produção automaticamente após a integração ser conectada.
 5. Após a publicação, confira imagens, FAQ, links legais e botões que levam a `https://pay.cakto.com.br/nwyvmfs_1200486`.
 
@@ -30,4 +30,10 @@ Identidade com rosa vibrante, fundos escuros e rosados, tipografia forte e mocku
 
 ## Google Ads
 
-Tag base `AW-18515830369` instalada com gtag.js assíncrono. Nenhuma conversão de compra é disparada pela landing page. Uma ação de conversão específica requer seu rótulo e configuração no ponto correto do fluxo de compra.
+Tag base `AW-18515830369` instalada com gtag.js assíncrono. Nenhuma conversão de compra é disparada pela landing page. A integração existente da Cakto é responsável pelas conversões atuais. O novo webhook não envia conversões e não deve duplicar esse fluxo.
+
+## Webhook Cakto (etapa de validação)
+
+Endpoint: `POST /api/cakto-webhook`. Configuração, deduplicação persistente, atribuição e limitações: [docs/cakto-webhook.md](docs/cakto-webhook.md).
+
+Validação local: `npm test` e `npm run build`. Use `vercel dev` para servir a Function localmente com variáveis de desenvolvimento. Não envie vendas sintéticas ao endpoint de produção.

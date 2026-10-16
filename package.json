@@ -1,0 +1,11 @@
+{
+  "name": "menopausa-real-40",
+  "private": true,
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "node scripts/build-static.cjs",
+    "test": "node tests/cakto-webhook.test.cjs"
+  }
+}
