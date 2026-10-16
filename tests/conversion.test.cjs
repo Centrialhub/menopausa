@@ -18,12 +18,13 @@ test('hero has the requested message, price, delivery condition and educational 
 
 test('every purchase link still targets the original Cakto checkout', () => {
   const buttons = [...html.matchAll(/<a\b[^>]*(?:data-checkout|class="header-link")[^>]*>/g)];
-  assert.equal(buttons.length, 5);
+  assert.equal(buttons.length, 6);
   buttons.forEach(([tag]) => assert.ok(tag.includes('href="' + checkout + '"')));
   assert.ok(readFileSync(join(root, 'script.js'), 'utf8').includes('const CHECKOUT_CAKTO_URL = "' + checkout + '"'));
 });
 
 test('Meta Pixel, Google Ads and page script tags are unchanged', () => {
+  const html = readFileSync(join(root, 'index.html'), 'utf8').replace('<script src="preview.js" defer></script>', '');
   assert.deepEqual([...html.matchAll(/<script\b[\s\S]*?<\/script>/g)].map(x => x[0]), ["<script src=\"script.js\" defer></script>","<script async src=\"https://www.googletagmanager.com/gtag/js?id=AW-18515830369\"></script>","<script>\r\nwindow.dataLayer = window.dataLayer || [];\r\nfunction gtag(){dataLayer.push(arguments);}\r\ngtag('js', new Date());\r\ngtag('config', 'AW-18515830369');\r\n</script>","<script>\r\n!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?\r\nn.callMethod.apply(n,arguments):n.queue.push(arguments)};\r\nif(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\r\nn.queue=[];t=b.createElement(e);t.async=!0;\r\nt.src=v;s=b.getElementsByTagName(e)[0];\r\ns.parentNode.insertBefore(t,s)}(window,document,'script',\r\n'https://connect.facebook.net/en_US/fbevents.js');\r\nfbq('init', '296038289614983');\r\nfbq('track', 'PageView');\r\n</script>"]);
   assert.ok(html.includes('https://www.facebook.com/tr?id=296038289614983&amp;ev=PageView&amp;noscript=1'));
 });
@@ -33,10 +34,68 @@ test('checkout logic, webhook, deployment settings and original artwork stay byt
   baseline.forEach(({ file, hash }) => assert.equal(createHash('sha256').update(readFileSync(join(root, file))).digest('hex'), hash, file));
 });
 
-test('product presentation is explicitly digital and previews stay identified as illustrative', () => {
-  assert.ok(html.includes('Não há envio de produto físico.'));
-  assert.ok(html.includes('não são reproduções das páginas do PDF'));
+test('product presentation is explicitly digital and uses three real, expandable PDF previews', () => {
+  const showcase = html.match(/<section class="section preview[\s\S]*?<\/section>/)[0];
+  assert.ok(showcase.includes('Capa e páginas reais do guia digital.'));
+  assert.ok(showcase.includes('Guia digital em PDF • 16 páginas • Acesso após confirmação do pagamento.'));
+  assert.equal([...showcase.matchAll(/data-guide-preview href=/g)].length, 3);
+  for (const page of ['04', '08', '14']) {
+    assert.ok(showcase.includes(`href="assets/guide-page-${page}.webp"`));
+    assert.ok(readFileSync(join(root, `assets/guide-page-${page}.webp`)).length > 0);
+  }
+  assert.ok(showcase.includes('<dialog id="guide-preview-dialog"'));
+  assert.ok(!showcase.match(/<img[^>]*src=[^>]*width="1200"/));
   assert.ok(html.includes('Um guia digital em PDF com 16 páginas ilustradas'));
   assert.ok(html.includes('Prepare a conversa com seu médico'));
+});
+
+test('every section outside the requested showcase remains unchanged', () => {
+  const outside = html.replace(/\r\n/g, '\n').replace(/<section class=.section preview[\s\S]*?<\/section>/, 'SHOWCASE');
+  assert.equal(createHash('sha256').update(outside).digest('hex'), '6dea785411f42e6137656ac81aadaf765d58c5094085f56ea4f9feba3b5926e4');
+});
+
+test('preview opens lazily, zooms, closes and restores focus without touching checkout', () => {
+  const { runInNewContext } = require('node:vm');
+  const element = () => ({
+    events: {}, attributes: {}, textContent: '',
+    addEventListener(name, handler) { this.events[name] = handler; },
+    setAttribute(name, value) { this.attributes[name] = value; },
+    getAttribute(name) { return this.attributes[name]; },
+    removeAttribute(name) { delete this[name]; },
+  });
+  const image = element(), title = element(), zoom = element(), close = element(), viewport = element();
+  const classes = new Set();
+  viewport.classList = {
+    toggle(name) { if (classes.has(name)) { classes.delete(name); return false; } classes.add(name); return true; },
+    remove(name) { classes.delete(name); },
+  };
+  const dialog = element();
+  dialog.querySelector = selector => ({ img: image, '#guide-preview-title': title, '.showcase-image-window': viewport, '[data-preview-zoom]': zoom, '[data-preview-close]': close })[selector];
+  dialog.showModal = () => { dialog.open = true; };
+  dialog.close = () => { dialog.open = false; dialog.events.close(); };
+  const link = element();
+  link.href = 'assets/guide-page-04.webp';
+  link.attributes['aria-label'] = 'Ampliar página 4: climatério e menopausa';
+  link.querySelector = () => ({ alt: 'Página real 4' });
+  link.focus = () => { link.focused = true; };
+  const document = { getElementById: () => dialog, querySelectorAll: () => [link] };
+  const code = readFileSync(join(root, 'preview.js'), 'utf8');
+  runInNewContext(code, { document });
+  assert.equal(image.src, undefined);
+  link.events.click({ ctrlKey: true });
+  assert.equal(dialog.open, undefined);
+  let prevented = false;
+  link.events.click({ preventDefault() { prevented = true; } });
+  assert.ok(prevented && dialog.open);
+  assert.equal(image.src, link.href);
+  assert.equal(image.alt, 'Página real 4');
+  zoom.events.click();
+  assert.equal(zoom.attributes['aria-pressed'], 'true');
+  close.events.click();
+  assert.equal(dialog.open, false);
+  assert.equal(image.src, undefined);
+  assert.equal(zoom.attributes['aria-pressed'], 'false');
+  assert.ok(link.focused);
+  assert.doesNotThrow(() => runInNewContext(code, { document: { getElementById: () => null } }));
 });
 
