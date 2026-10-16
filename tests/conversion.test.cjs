@@ -50,8 +50,24 @@ test('product presentation is explicitly digital and uses three real, expandable
 });
 
 test('every section outside the requested showcase remains unchanged', () => {
-  const outside = html.replace(/\r\n/g, '\n').replace(/<section class=.section preview[\s\S]*?<\/section>/, 'SHOWCASE');
+  const outside = html.replace(/\r\n/g, '\n').replace('class="section wrap identification" id="sintomas"', 'class="section wrap identification"').replace(/<section class=.section preview[\s\S]*?<\/section>/, 'SHOWCASE');
   assert.equal(createHash('sha256').update(outside).digest('hex'), '6dea785411f42e6137656ac81aadaf765d58c5094085f56ea4f9feba3b5926e4');
+});
+
+test('Google Ads sitelinks resolve to four unique existing sections', () => {
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(ids.length, new Set(ids).size, 'HTML IDs must be unique');
+  for (const [id, className, content] of [
+    ['sintomas', 'identification', 'Calor que aparece'],
+    ['guia', 'intro', 'Foi por isso que criamos'],
+    ['por-dentro', 'product-showcase', 'CONHEÇA SEU GUIA POR DENTRO'],
+    ['duvidas', 'faq', 'É um produto físico?'],
+  ]) {
+    const section = html.match(new RegExp(`<section\\b[^>]*id="${id}"[^>]*>[\\s\\S]*?<\\/section>`));
+    assert.ok(section, `Missing section #${id}`);
+    assert.ok(section[0].includes(className), id);
+    assert.ok(section[0].includes(content), id);
+  }
 });
 
 test('preview opens lazily, zooms, closes and restores focus without touching checkout', () => {
